@@ -9,5 +9,3 @@ data/raw/
 data/papers/
 # obsidian workspace state (keep app/appearance/plugins config)
 .obsidian/workspace*.json
-# stale nested obsidian vault copy; canonical files live in docs/
-innospark-tutoract/
