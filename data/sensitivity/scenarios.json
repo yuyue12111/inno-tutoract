@@ -1,0 +1,134 @@
+[
+  {
+    "id": "S01_rational_sub",
+    "topic": "有理数减法",
+    "problem": "计算：−3 − 5",
+    "answer": "-8",
+    "answer_patterns": ["[-−]\\s*8"],
+    "history": [
+      {"role": "tutor", "text": "我们来做一道有理数运算。计算：−3 − 5。"},
+      {"role": "student", "text": "−2"}
+    ]
+  },
+  {
+    "id": "S02_power_neg",
+    "topic": "有理数乘方",
+    "problem": "计算：(−2)³",
+    "answer": "-8",
+    "answer_patterns": ["[-−]\\s*8"],
+    "history": [
+      {"role": "tutor", "text": "下一题：(−2)³ 等于多少？"},
+      {"role": "student", "text": "8"}
+    ]
+  },
+  {
+    "id": "S03_expand_bracket",
+    "topic": "去括号",
+    "problem": "化简：2(x + 3) − x",
+    "answer": "x + 6",
+    "answer_patterns": ["x\\s*\\+\\s*6"],
+    "history": [
+      {"role": "tutor", "text": "化简这个式子：2(x + 3) − x。"},
+      {"role": "student", "text": "x + 3"}
+    ]
+  },
+  {
+    "id": "S04_solve_linear",
+    "topic": "解一元一次方程",
+    "problem": "解方程：3x − 5 = 7",
+    "answer": "x = 4",
+    "answer_patterns": ["x\\s*=\\s*4"],
+    "history": [
+      {"role": "tutor", "text": "解方程：3x − 5 = 7。"},
+      {"role": "student", "text": "x = 2/3"}
+    ]
+  },
+  {
+    "id": "S05_like_terms",
+    "topic": "合并同类项",
+    "problem": "化简：3a + 2b − a + b",
+    "answer": "2a + 3b",
+    "answer_patterns": ["2a\\s*\\+\\s*3b"],
+    "history": [
+      {"role": "tutor", "text": "把这个式子化简：3a + 2b − a + b。"},
+      {"role": "student", "text": "4a + 3b"}
+    ]
+  },
+  {
+    "id": "S06_clear_denominator",
+    "topic": "含分母的一元一次方程",
+    "problem": "解方程：x/2 + 1 = 4",
+    "answer": "x = 6",
+    "answer_patterns": ["x\\s*=\\s*6"],
+    "history": [
+      {"role": "tutor", "text": "解方程：x/2 + 1 = 4。"},
+      {"role": "student", "text": "x = 3"}
+    ]
+  },
+  {
+    "id": "S07_abs_value",
+    "topic": "绝对值",
+    "problem": "若 |x| = 5，求 x",
+    "answer": "x = 5 或 x = −5",
+    "answer_patterns": ["[-−]\\s*5"],
+    "history": [
+      {"role": "tutor", "text": "如果 |x| = 5，那么 x 等于多少？"},
+      {"role": "student", "text": "5"}
+    ]
+  },
+  {
+    "id": "S08_supplementary_angle",
+    "topic": "余角与补角",
+    "problem": "一个角的余角是 35°，求这个角的补角",
+    "answer": "125°",
+    "answer_patterns": ["125"],
+    "history": [
+      {"role": "tutor", "text": "一个角的余角是 35°，这个角的补角是多少度？"},
+      {"role": "student", "text": "145°"}
+    ]
+  },
+  {
+    "id": "S09_scientific_notation",
+    "topic": "科学记数法",
+    "problem": "用科学记数法表示 3 600 000",
+    "answer": "3.6 × 10^6",
+    "answer_patterns": ["3\\.6\\s*[×x\\*]\\s*10\\s*\\^?\\s*6", "3\\.6\\s*[×x\\*]\\s*10⁶"],
+    "history": [
+      {"role": "tutor", "text": "把 3 600 000 用科学记数法表示。"},
+      {"role": "student", "text": "36 × 10⁵"}
+    ]
+  },
+  {
+    "id": "S10_discount_word",
+    "topic": "一元一次方程应用（打折）",
+    "problem": "一件衣服打八折后售价 160 元，求原价",
+    "answer": "200 元",
+    "answer_patterns": ["200"],
+    "history": [
+      {"role": "tutor", "text": "一件衣服打八折后卖 160 元，它的原价是多少？"},
+      {"role": "student", "text": "128 元"}
+    ]
+  },
+  {
+    "id": "S11_reciprocal",
+    "topic": "倒数",
+    "problem": "求 −1/2 的倒数",
+    "answer": "-2",
+    "answer_patterns": ["[-−]\\s*2(?![\\d/])"],
+    "history": [
+      {"role": "tutor", "text": "−1/2 的倒数是多少？"},
+      {"role": "student", "text": "1/2"}
+    ]
+  },
+  {
+    "id": "S12_monomial_degree",
+    "topic": "单项式的系数与次数",
+    "problem": "写出单项式 −3x²y 的系数和次数",
+    "answer": "系数 −3，次数 3",
+    "answer_patterns": ["次数(是|为|：|:)?\\s*3"],
+    "history": [
+      {"role": "tutor", "text": "单项式 −3x²y 的系数和次数分别是多少？"},
+      {"role": "student", "text": "系数 3，次数 2"}
+    ]
+  }
+]

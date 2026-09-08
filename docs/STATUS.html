@@ -1,0 +1,350 @@
+<title>EduLM T2/T3 进展与计划</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #F4F6F8;
+    --surface: #FFFFFF;
+    --ink: #1B2430;
+    --muted: #5B6773;
+    --line: #D6DCE2;
+    --accent: #0F6E6E;
+    --accent-soft: #DCEFEF;
+    --gate: #A8701A;
+    --gate-soft: #F6EBD3;
+    --risk: #A63D40;
+    --risk-soft: #F5DFDF;
+    --done: #2F7A4C;
+    --done-soft: #DDEFE3;
+    --code-bg: #EAEEF2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12181E;
+      --surface: #1A222A;
+      --ink: #E6EAEE;
+      --muted: #9AA6B2;
+      --line: #2F3A45;
+      --accent: #55B9B9;
+      --accent-soft: #163636;
+      --gate: #D9A34A;
+      --gate-soft: #3A2E14;
+      --risk: #E08085;
+      --risk-soft: #3E1F21;
+      --done: #6FC48F;
+      --done-soft: #1B3A27;
+      --code-bg: #232D37;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12181E;
+    --surface: #1A222A;
+    --ink: #E6EAEE;
+    --muted: #9AA6B2;
+    --line: #2F3A45;
+    --accent: #55B9B9;
+    --accent-soft: #163636;
+    --gate: #D9A34A;
+    --gate-soft: #3A2E14;
+    --risk: #E08085;
+    --risk-soft: #3E1F21;
+    --done: #6FC48F;
+    --done-soft: #1B3A27;
+    --code-bg: #232D37;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .page { max-width: 820px; margin: 0 auto; padding: 48px 24px 96px; }
+  h1, h2, h3 {
+    font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
+    text-wrap: balance;
+    margin: 0;
+    line-height: 1.3;
+  }
+  h1 { font-size: 34px; font-weight: 700; }
+  h2 { font-size: 21px; font-weight: 600; margin-top: 56px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 16px; font-weight: 600; margin-top: 28px; }
+  p { margin: 12px 0; max-width: 68ch; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); font-family: "IBM Plex Mono", monospace;
+  }
+  .meta { color: var(--muted); font-size: 13px; margin-top: 10px; display: flex; gap: 20px; flex-wrap: wrap; }
+  code, .mono {
+    font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    font-size: 0.9em;
+  }
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; }
+
+  /* one-sentence summary: the single lifted block */
+  .thesis {
+    margin-top: 32px; padding: 20px 24px;
+    background: var(--surface);
+    border-left: 4px solid var(--accent);
+    font-size: 16px;
+  }
+  .thesis strong { color: var(--accent); }
+
+  /* evidence chain stepper */
+  .chain { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 20px; }
+  .step {
+    padding: 12px 12px 14px; background: var(--surface); border-top: 3px solid var(--line);
+    display: flex; flex-direction: column; gap: 6px; min-height: 130px;
+  }
+  .step .n { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--muted); }
+  .step .t { font-weight: 500; line-height: 1.4; }
+  .step .s { font-size: 12px; color: var(--muted); line-height: 1.45; margin-top: auto; }
+  .step.partial { border-top-color: var(--gate); }
+  .step.todo { border-top-color: var(--line); }
+  .step.here { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .step.here .n::after { content: " ← 当前"; color: var(--accent); }
+  @media (max-width: 640px) { .chain { grid-template-columns: 1fr 1fr; } }
+
+  /* status pills */
+  .pill {
+    display: inline-block; font-size: 11px; letter-spacing: 0.06em; padding: 1px 8px; border-radius: 999px;
+    font-family: "IBM Plex Mono", monospace; vertical-align: middle; white-space: nowrap;
+  }
+  .pill.done { background: var(--done-soft); color: var(--done); }
+  .pill.partial { background: var(--gate-soft); color: var(--gate); }
+  .pill.todo { background: var(--code-bg); color: var(--muted); }
+  .pill.risk { background: var(--risk-soft); color: var(--risk); }
+
+  /* completed items */
+  .item { padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .item:last-child { border-bottom: 0; }
+  .item h3 { margin-top: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .item ul { margin: 8px 0 0; padding-left: 20px; }
+  .item li { margin: 4px 0; }
+  .item .files { margin-top: 8px; font-size: 12.5px; color: var(--muted); line-height: 1.9; }
+  .verdict { color: var(--gate); font-weight: 500; }
+
+  /* gates */
+  .gates { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .gate { background: var(--surface); padding: 18px 20px; border-top: 3px solid var(--gate); }
+  .gate h3 { margin-top: 0; }
+  .gate dl { margin: 12px 0 0; }
+  .gate dt { font-size: 12px; letter-spacing: 0.08em; color: var(--muted); font-family: "IBM Plex Mono", monospace; margin-top: 10px; }
+  .gate dd { margin: 2px 0 0; }
+  .gate dt.pass { color: var(--done); }
+  .gate dt.fail { color: var(--risk); }
+  .rule { margin-top: 14px; padding: 10px 14px; background: var(--gate-soft); color: var(--ink); font-size: 14px; }
+  @media (max-width: 640px) { .gates { grid-template-columns: 1fr; } }
+
+  /* tables */
+  .tw { overflow-x: auto; margin-top: 12px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; letter-spacing: 0.06em; color: var(--muted); font-weight: 500; font-family: "IBM Plex Mono", monospace; }
+  td.mono { font-size: 12.5px; }
+  td { font-variant-numeric: tabular-nums; }
+  .owner { white-space: nowrap; }
+
+  ol.decisions { padding-left: 22px; }
+  ol.decisions li { margin: 6px 0; }
+  .foot { margin-top: 48px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 14px; }
+  a { color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="page">
+  <div class="eyebrow">EduLM · T2 教学动作决策 · T3 多轮自适应辅导</div>
+  <h1 style="margin-top:10px">进展与计划</h1>
+  <div class="meta">
+    <span>更新 2026-09-07</span>
+    <span>whyu · Claude（审稿会话）</span>
+    <span>底稿 <code>docs/STATUS.md</code></span>
+  </div>
+
+  <div class="thesis">
+    地基第一步（动作集 v0）、一个试点实验（27B 状态敏感度）、一张核过会议的文献地图已经完成。它们共同指向一个结论：<strong>原计划的贡献点需要先过两个门槛才成立，目前没有任何可以下结论的证据。</strong> 接下来两周的全部工作就是过这两个门槛。
+  </div>
+
+  <h2>1 · 主张与证据链</h2>
+  <p>要证明的一句话：<em>从真实专家日志学出的状态条件化教学动作策略，比强提示的前沿模型更接近专家，并且带来更高的多轮学习增益。</em> 证据链五步，顺序不能换。</p>
+  <div class="chain">
+    <div class="step partial here">
+      <div class="n">1</div>
+      <div class="t">构念有效</div>
+      <div class="s">动作集与状态表示能被两位老师一致使用。v0 已有，一致率未测。</div>
+    </div>
+    <div class="step todo">
+      <div class="n">2</div>
+      <div class="t">金标准</div>
+      <div class="s">冻结探针集上的老师标注。未开始，卡在找老师。</div>
+    </div>
+    <div class="step todo">
+      <div class="n">3</div>
+      <div class="t">差距</div>
+      <div class="s">前沿模型 + 优化提示词与老师的距离。只跑了 27B + 手写提示词，不算。</div>
+    </div>
+    <div class="step todo">
+      <div class="n">4</div>
+      <div class="t">干预</div>
+      <div class="s">训练。不做，直到 1 到 3 有答案。</div>
+    </div>
+    <div class="step todo">
+      <div class="n">5</div>
+      <div class="t">结果</div>
+      <div class="s">动作更像专家是否提高学习增益（T3）。未开始。</div>
+    </div>
+  </div>
+
+  <h2>2 · 已完成</h2>
+
+  <div class="item">
+    <h3>动作集 v0 <span class="pill done">完成</span></h3>
+    <ul>
+      <li>8 个动作，按功能分：<span class="mono">PROBE · HINT · EXPLAIN · EXAMPLE · PRACTICE · CORRECT(reveals_answer) · AFFIRM · MANAGE</span></li>
+      <li>学生状态 7 个结构化字段；一张状态到动作的启发式表，作为标注指引与规则基线雏形</li>
+      <li>Bridge 20 段试标：全部可标；与原标签一致率 60%（朴素映射）、75%（联合意图映射）；不一致全部来自 Bridge 按形式分类，修订了 3 处定义</li>
+    </ul>
+    <div class="files mono">docs/action_set_v0.md · data/action_set_v0.json · data/annotation/bridge_trial20.*.jsonl</div>
+  </div>
+
+  <div class="item">
+    <h3>基础设施 <span class="pill done">完成</span></h3>
+    <ul>
+      <li>Bridge（700 段）与 MathDial（2861 段）已在本地；Qwen3.8-27B 端点已封装，OpenAI 兼容，思考模式可开关；Python 3.12 环境</li>
+    </ul>
+    <div class="files mono">data/raw/ · scripts/llm_client.py · .env（不入库）</div>
+  </div>
+
+  <div class="item">
+    <h3>实验 A：27B 状态敏感度 <span class="pill partial">试点，苗头非结论</span></h3>
+    <ul>
+      <li>12 个七年级场景，固定历史只换 7 种学生状态；两段式输出；三种解码配置，756 次生成</li>
+      <li>描述性观察：EXPLAIN、EXAMPLE、PRACTICE 合计不到 10%；"粗心"与"系统性误解"下动作分布几乎相同；已提示两次仍错时 53% 到 100% 直接报答案；思考模式无改善</li>
+      <li class="verdict">期望动作来自自写启发式表，属循环论证；单模型、手写提示词、自编场景。报告第 7 节已改为"候选含义，不得引用"</li>
+    </ul>
+    <div class="files mono">docs/phase1_sensitivity_findings.md · results/sensitivity/ · scripts/run_sensitivity.py</div>
+  </div>
+
+  <div class="item">
+    <h3>Bridge 复核 <span class="pill done">完成</span></h3>
+    <ul>
+      <li>Bridge 没有报告标注者一致率</li>
+      <li>GPT-4 预测专家策略准确率 32%，等于多数类基线，200 次里 170 次猜 ask_question。与 27B 的坍缩是同一现象</li>
+      <li class="verdict">专家动作可预测性的天花板未知，这是 T2 最底层的未知数</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <h3>文献地图 <span class="pill partial">骨架完成，内容待填</span></h3>
+    <ul>
+      <li>教育 22 篇，会议全部核实：同行评审顶会正文只有 4 篇；13 篇 arXiv 预印本；GuideEval 被 ICLR 2026 拒稿</li>
+      <li>通用 22 篇：获奖或 oral 且结构对应的 4 篇（CollabLLM、LLMs Get Lost in Multi-Turn、SOTOPIA、LLM Debate）；顶会正文 14 篇</li>
+      <li class="verdict">两条线独立指向同一结论：方法层面新意空间很小。解耦架构是 PPDPP（ICLR 2024），层级多轮 RL 是 ArCHer（ICML 2024），教育侧 2507.16252 已做"潜在状态 → 高层动作 → 条件生成"。可能的立足点只剩两个：策略从真实专家日志学出；教育结果上的证据</li>
+      <li>另一会话的综述已核出 4 处不准</li>
+    </ul>
+    <div class="files mono">docs/literature_map.md</div>
+  </div>
+
+  <div class="item">
+    <h3>协作方式 <span class="pill todo">待确认</span></h3>
+    <ul>
+      <li>三个会话：执行（做过文献检索的 fork）、审稿（本会话）、复制品（建议归档）</li>
+      <li>审稿的前提是预注册：假设、指标、阈值、出口在实验前写死；审稿会话不跑它审的实验</li>
+      <li>两个会话是同一个模型，共享盲点。真正独立的检查只有老师标注和前沿基线</li>
+    </ul>
+  </div>
+
+  <h2>3 · 两个门槛</h2>
+  <div class="gates">
+    <div class="gate">
+      <h3>门槛一 · 专家标注</h3>
+      <p style="margin:6px 0 0">两位七年级数学老师在冻结探针集上标动作；算一致率；检验动作是否随错因、掌握度变化。</p>
+      <dl>
+        <dt class="pass">过</dt>
+        <dd>动作集与状态维度有效，进入门槛二</dd>
+        <dt class="fail">不过 · 一致率低但话术随状态变</dt>
+        <dd>动作集太粗，修 v1 重标</dd>
+        <dt class="fail">不过 · 老师也不区分</dt>
+        <dd>维度不成立，重定义 T2</dd>
+      </dl>
+    </div>
+    <div class="gate">
+      <h3>门槛二 · 强基线</h3>
+      <p style="margin:6px 0 0">前沿模型（最好是最终目标模型）+ 优化提示词（按 2605.27088 的方法）在老师标注上的表现。</p>
+      <dl>
+        <dt class="pass">过</dt>
+        <dd>明显落后于老师：训练故事成立，进入阶段 2</dd>
+        <dt class="fail">不过</dt>
+        <dd>接近老师间一致率：训练故事不成立，转向真实日志的数据与评测贡献，或 T3 长程增益</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="rule">两个门槛有答案之前：不写训练代码，不建模拟器，不动 T3，不复现 PEARL 类工作。</div>
+
+  <h2>4 · 接下来两周</h2>
+  <h3>第一周</h3>
+  <div class="tw"><table>
+    <thead><tr><th>事项</th><th>负责</th><th>依赖</th></tr></thead>
+    <tbody>
+      <tr><td>读文献：教育第一层 6 篇 + 通用 G1 4 篇，填对照表，写"空位在哪"一段</td><td class="owner">whyu</td><td>无，2 天</td></tr>
+      <tr><td>冻结探针集：12 个场景扩到 30，6 种状态，加带过程的错误作答；生成老师用的标注表</td><td class="owner">执行会话</td><td>无</td></tr>
+      <tr><td>拉取 TutorMoments 数据，映射到 v0，作为第二代理评测集</td><td class="owner">执行会话</td><td>无</td></tr>
+      <tr><td>找两位七年级数学老师</td><td class="owner">whyu</td><td>无</td></tr>
+      <tr><td>确认前沿模型 API 与最终目标模型</td><td class="owner">whyu</td><td>无</td></tr>
+      <tr><td>推进内部日志权限</td><td class="owner">whyu</td><td>无</td></tr>
+      <tr><td>写预注册文件：假设、指标、阈值、两个出口</td><td class="owner">审稿会话</td><td>文献读完之后</td></tr>
+    </tbody>
+  </table></div>
+  <h3>第二周</h3>
+  <div class="tw"><table>
+    <thead><tr><th>事项</th><th>负责</th><th>依赖</th></tr></thead>
+    <tbody>
+      <tr><td>老师标注，每人约 200 条；算 Cohen's kappa；按状态检验动作分布差异</td><td class="owner">老师 + 执行会话</td><td>探针集冻结、老师到位</td></tr>
+      <tr><td>基线矩阵：27B / 前沿 / 小模型 × 基础提示 / 优化提示，对老师标注算符合率与泄答案率</td><td class="owner">执行会话</td><td>老师标注、API</td></tr>
+      <tr><td>决策会：按第 3 节的出口定阶段 2</td><td class="owner">whyu + 审稿会话</td><td>以上全部</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>5 · 风险</h2>
+  <div class="tw"><table>
+    <thead><tr><th>风险</th><th>后果</th><th>对策</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill risk">高</span> 内部日志拿不到</td><td>失去"从真实专家日志学"这个唯一可能的新意，论文退化为合成场景上的又一个 DPO 辅导模型</td><td>现在就推权限；同时用 TutorMoments 和 Bridge 两套公开真实日志把流水线跑实</td></tr>
+      <tr><td><span class="pill risk">高</span> 找不到两位老师</td><td>门槛一无法进行，一切数字无法解释</td><td>退而求其次：一位老师 + 研究者自己双标，只能算试点</td></tr>
+      <tr><td><span class="pill partial">中</span> 老师间一致率低</td><td>"预测专家动作"目标本身不适定</td><td>改为多解集合评测或直接评结果</td></tr>
+      <tr><td><span class="pill partial">中</span> 前沿模型加优化提示词已经够好</td><td>T2 训练故事不成立</td><td>提前两周知道，转向数据与评测贡献或 T3</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>6 · 待拍板</h2>
+  <ol class="decisions">
+    <li>分工：执行会话、审稿会话、归档复制品，是否照此。</li>
+    <li>预注册文件何时写：建议文献读完后。</li>
+    <li>两位老师：能否找到，何时有空。</li>
+    <li>前沿模型 API 与最终目标模型。</li>
+    <li>内部日志：权限、卡点、预计时间。</li>
+  </ol>
+
+  <h2>7 · 产出清单</h2>
+  <div class="tw"><table>
+    <thead><tr><th>文件</th><th>内容</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">HANDOFF_T2_T3.md</td><td>交接文档</td><td>原始</td></tr>
+      <tr><td class="mono">docs/STATUS.md</td><td>本文档底稿</td><td>每次决策后更新</td></tr>
+      <tr><td class="mono">docs/action_set_v0.md</td><td>动作集 v0 全文</td><td><span class="pill done">完成</span> 待老师标注后修 v1</td></tr>
+      <tr><td class="mono">data/action_set_v0.json</td><td>机器可读动作集、状态字段、映射表</td><td><span class="pill done">完成</span></td></tr>
+      <tr><td class="mono">data/annotation/bridge_trial20.annotated.jsonl</td><td>Bridge 20 段试标</td><td><span class="pill done">完成</span></td></tr>
+      <tr><td class="mono">docs/phase1_sensitivity_findings.md</td><td>实验 A 报告</td><td><span class="pill done">完成</span> 第 7 节已改为候选含义</td></tr>
+      <tr><td class="mono">results/sensitivity/</td><td>实验 A 原始输出、汇总、图</td><td><span class="pill done">完成</span></td></tr>
+      <tr><td class="mono">docs/literature_map.md</td><td>44 篇文献对照表，会议已核</td><td><span class="pill partial">骨架</span> 内容待 whyu 逐篇填</td></tr>
+      <tr><td class="mono">data/sensitivity/scenarios.json</td><td>12 个探针场景</td><td><span class="pill partial">待扩到 30</span></td></tr>
+      <tr><td class="mono">scripts/</td><td>抽样、试标一致率、模型客户端、敏感度实验与分析</td><td><span class="pill done">可复现</span></td></tr>
+      <tr><td class="mono">预注册文件</td><td>门槛、指标、阈值、出口</td><td><span class="pill todo">待写</span></td></tr>
+      <tr><td class="mono">老师标注表</td><td>探针集 × 状态 × 老师</td><td><span class="pill todo">待建</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="foot">本页是 <code>docs/STATUS.md</code> 的渲染版。数字与判断以仓库文档为准；任何一处与仓库不一致，以仓库为准并更新本页。</div>
+</div>

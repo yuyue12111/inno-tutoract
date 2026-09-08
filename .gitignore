@@ -1,0 +1,13 @@
+# secrets
+.env
+# local env / caches
+.venv/
+__pycache__/
+.DS_Store
+# large or third-party data (re-fetch with scripts / git clone)
+data/raw/
+data/papers/
+# obsidian workspace state (keep app/appearance/plugins config)
+.obsidian/workspace*.json
+# stale nested obsidian vault copy; canonical files live in docs/
+innospark-tutoract/

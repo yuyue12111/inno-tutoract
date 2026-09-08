@@ -1,0 +1,52 @@
+{
+  "version": "v0",
+  "date": "2026-09-06",
+  "subject": "math",
+  "grade": 7,
+  "actions": [
+    {"id": "PROBE",    "zh": "追问诊断", "def": "让学生说出想法/步骤/依据或提诊断性子问题，不给内容"},
+    {"id": "HINT",     "zh": "提示引导", "def": "带指向的线索：错误位置、相关信息、换说法降难度、验算方法；不说答案不讲完整规则"},
+    {"id": "EXPLAIN",  "zh": "讲解",     "def": "直接教概念/规则/方法，可附小例，不完整演示同类题"},
+    {"id": "EXAMPLE",  "zh": "示例类比", "def": "原题未解决时引入更简单或同构实例搭脚手架，教师演示或学生做"},
+    {"id": "PRACTICE", "zh": "练习验证", "def": "原题解决后或学生声称已懂时给新题独立做，用于巩固/迁移/验证"},
+    {"id": "CORRECT",  "zh": "纠错告知", "def": "指出错处并直接给出正确项；reveals_answer 标志记录是否给出最终答案", "flags": ["reveals_answer"]},
+    {"id": "AFFIRM",   "zh": "确认推进", "def": "确认正确并推进到下一步/下一问/收尾"},
+    {"id": "MANAGE",   "zh": "反馈调控", "def": "无教学内容：纯评价反馈、鼓励、拉回跑题、开场结束流程"}
+  ],
+  "student_state": {
+    "last_response": ["correct", "partial", "incorrect", "no_answer", "claims_understanding", "off_task"],
+    "error_type": ["none", "careless", "imprecise", "misinterpret", "procedure", "misconception", "concept_gap", "fact_recall", "unknown"],
+    "mastery": ["low", "mid", "high", "unverified"],
+    "affect": ["ok", "frustrated", "disengaged", "overconfident", "wants_to_quit"],
+    "step_error_streak": "int", "hints_given": "int", "turn_index": "int"
+  },
+  "decision_heuristics": [
+    {"if": "affect in {frustrated,disengaged,wants_to_quit} or last_response=off_task", "then": "MANAGE"},
+    {"if": "last_response=correct and mastery>=mid", "then": "AFFIRM"},
+    {"if": "last_response in {correct,claims_understanding} and mastery=unverified", "then": "PRACTICE"},
+    {"if": "error_type=unknown or bare answer without work", "then": "PROBE"},
+    {"if": "error_type in {imprecise,fact_recall}", "then": "CORRECT(reveals_answer=false)"},
+    {"if": "error_type in {careless,misinterpret,procedure} and hints_given<=1", "then": "HINT"},
+    {"if": "error_type in {concept_gap,misconception} or hints_given>=2", "then": "EXPLAIN"},
+    {"if": "still wrong after EXPLAIN", "then": "EXAMPLE"},
+    {"if": "hints_given>=2 and step_error_streak>=3 and out of time", "then": "CORRECT(reveals_answer=true)"}
+  ],
+  "mapping": {
+    "bridge_strategy": {
+      "provide_hint": "HINT", "simplify_question": "HINT",
+      "ask_question": {"diagnose_mistake": "PROBE", "elaborate_answer": "PROBE", "hint_mistake": "HINT",
+                        "support_thinking": "HINT", "clarify_misunderstanding": "HINT", "_default": "PROBE"},
+      "provide_strategy": {"hint_mistake": "HINT", "_default": "EXPLAIN"},
+      "explain_concept": "EXPLAIN", "provide_example": "EXAMPLE",
+      "provide_similar_problem": "PRACTICE", "provide_correction": "CORRECT",
+      "affirm_correct_answer": "AFFIRM", "encourage_student": "MANAGE"
+    },
+    "bridge_error": {"guess": "concept_gap", "right-idea": "procedure", "diagnose": "unknown",
+                      "careless": "careless", "imprecise": "imprecise", "misinterpret": "misinterpret"},
+    "mathdial_move": {
+      "focus": "HINT", "probing": "PROBE", "telling": "EXPLAIN_or_CORRECT", "generic": "MANAGE_or_AFFIRM",
+      "_note": "MathDial 只有 4 个粗标签；telling 需按是否给最终答案拆 EXPLAIN/CORRECT，generic 需按是否肯定正确拆 AFFIRM/MANAGE"
+    },
+    "paper_2507_16252": {"instruct": "EXPLAIN", "encourage": "MANAGE", "refocus": "MANAGE", "ask a question": "PROBE_or_HINT"}
+  }
+}
